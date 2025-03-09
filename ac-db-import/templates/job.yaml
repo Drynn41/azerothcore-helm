@@ -1,0 +1,22 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: ac-db-import
+  namespace: {{ .Release.Namespace }}  # Utilisation du namespace du chart Helm
+spec:
+  template:
+    metadata:
+      name: ac-db-import
+    spec:
+      containers:
+        - name: ac-db-import
+          image: {{ .Values.image.repository }}:{{ .Values.image.tag }}  # L'image du job, définie dans le values.yaml
+          env:
+            - name: "AC_LOGIN_DATABASE_INFO"
+              value: "ac-db-service;3306;root;password;acore_auth"
+            - name: "AC_WORLD_DATABASE_INFO"
+              value: "ac-db-service;3306;root;password;acore_world"
+            - name: "AC_CHARACTER_DATABASE_INFO" 
+              value: "ac-db-service;3306;root;password;acore_characters"
+      restartPolicy: Never
+  backoffLimit: 4

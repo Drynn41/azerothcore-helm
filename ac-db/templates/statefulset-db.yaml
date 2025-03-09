@@ -1,0 +1,38 @@
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: wow-db
+  namespace: {{ .Values.namespace }}  # Utilisation du namespace spécifié dans values.yaml
+spec:
+  serviceName: {{ include "ac-db.fullname" . }}-db-service
+  replicas: {{ .Values.replicaCount }}
+  selector:
+    matchLabels:
+      app: wow-db
+  template:
+    metadata:
+      labels:
+        app: wow-db
+    spec:
+      containers:
+        - name: wow-db
+          image: {{ .Values.image.repository }}:{{ .Values.image.tag }}
+          ports:
+            - containerPort: 3306
+          env:
+            - name: MYSQL_ROOT_PASSWORD
+              value: {{ .Values.mysqlRootPassword }}
+          volumeMounts:
+            - name: wow-db-data
+              mountPath: /var/lib/mysql
+  volumeClaimTemplates:
+    - metadata:
+        name: wow-db-data
+      spec:
+        accessModes:
+          - ReadWriteOnce
+        resources:
+          requests:
+            storage: {{ .Values.persistence.size }}
+        storageClassName: {{ .Values.persistence.storageClass }}
+

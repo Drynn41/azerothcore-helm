@@ -1,7 +1,7 @@
 {{/*
 Expand the name of the chart.
 */}}
-{{- define "ac-client-data-init.name" -}}
+{{- define "ac-db.name" -}}
 {{- default .Chart.Name .Values.nameOverride | trunc 63 | trimSuffix "-" }}
 {{- end }}
 
@@ -10,7 +10,7 @@ Create a default fully qualified app name.
 We truncate at 63 chars because some Kubernetes name fields are limited to this (by the DNS naming spec).
 If release name contains chart name it will be used as a full name.
 */}}
-{{- define "ac-client-data-init.fullname" -}}
+{{- define "ac-db.fullname" -}}
 {{- if .Values.fullnameOverride }}
 {{- .Values.fullnameOverride | trunc 63 | trimSuffix "-" }}
 {{- else }}
@@ -26,16 +26,16 @@ If release name contains chart name it will be used as a full name.
 {{/*
 Create chart name and version as used by the chart label.
 */}}
-{{- define "ac-client-data-init.chart" -}}
+{{- define "ac-db.chart" -}}
 {{- printf "%s-%s" .Chart.Name .Chart.Version | replace "+" "_" | trunc 63 | trimSuffix "-" }}
 {{- end }}
 
 {{/*
 Common labels
 */}}
-{{- define "ac-client-data-init.labels" -}}
-helm.sh/chart: {{ include "ac-client-data-init.chart" . }}
-{{ include "ac-client-data-init.selectorLabels" . }}
+{{- define "ac-db.labels" -}}
+helm.sh/chart: {{ include "ac-db.chart" . }}
+{{ include "ac-db.selectorLabels" . }}
 {{- if .Chart.AppVersion }}
 app.kubernetes.io/version: {{ .Chart.AppVersion | quote }}
 {{- end }}
@@ -45,17 +45,17 @@ app.kubernetes.io/managed-by: {{ .Release.Service }}
 {{/*
 Selector labels
 */}}
-{{- define "ac-client-data-init.selectorLabels" -}}
-app.kubernetes.io/name: {{ include "ac-client-data-init.name" . }}
+{{- define "ac-db.selectorLabels" -}}
+app.kubernetes.io/name: {{ include "ac-db.name" . }}
 app.kubernetes.io/instance: {{ .Release.Name }}
 {{- end }}
 
 {{/*
 Create the name of the service account to use
 */}}
-{{- define "ac-client-data-init.serviceAccountName" -}}
+{{- define "ac-db.serviceAccountName" -}}
 {{- if .Values.serviceAccount.create }}
-{{- default (include "ac-client-data-init.fullname" .) .Values.serviceAccount.name }}
+{{- default (include "ac-db.fullname" .) .Values.serviceAccount.name }}
 {{- else }}
 {{- default "default" .Values.serviceAccount.name }}
 {{- end }}

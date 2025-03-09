@@ -1,0 +1,19 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: ac-worldserver-config
+  namespace: {{ .Release.Namespace }}
+data:
+  AC_LOGIN_DATABASE_INFO: "{{ .Values.worldserver.db.host }};{{ .Values.worldserver.db.port }};{{ .Values.worldserver.db.user }};{{ .Values.worldserver.db.password }};{{ .Values.worldserver.db.auth_schema }}"
+  AC_WORLD_DATABASE_INFO: "{{ .Values.worldserver.db.host }};{{ .Values.worldserver.db.port }};{{ .Values.worldserver.db.user }};{{ .Values.worldserver.db.password }};{{ .Values.worldserver.db.world_schema }}"
+  AC_CHARACTER_DATABASE_INFO: "{{ .Values.worldserver.db.host }};{{ .Values.worldserver.db.port }};{{ .Values.worldserver.db.user }};{{ .Values.worldserver.db.password }};{{ .Values.worldserver.db.characters_schema }}"
+  AC_DATA_DIR: "/azerothcore/env/dist/data"
+  AC_LOGS_DIR: "/azerothcore/env/dist/logs"
+    #DATAPATH: "/azerothcore/env/dist/data"
+    #CTYPE: "RelWithDebInfo"
+    #CSCRIPTS: "static"
+    #AC_CCACHE: true
+    #AC_RESTARTER_BINPATH: ""
+    #AC_RESTARTER_BINFILE: ""
+    #AC_RESTARTER_WITHGDB: ""
+

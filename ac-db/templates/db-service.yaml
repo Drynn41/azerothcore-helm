@@ -1,0 +1,15 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ include "ac-db.fullname" . }}-service
+  labels:
+    #app: {{ include "ac-db.name" . }}
+    app: wow-db
+spec:
+  clusterIP: None  # Headless service
+  ports:
+    - port: 3306  # Port de la base de données
+      targetPort: 3306
+  selector:
+    app: wow-db
+

@@ -1,0 +1,46 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: ac-worldserver
+  namespace: {{ .Release.Namespace }}
+  labels:
+    app: ac-worldserver
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: ac-worldserver
+  template:
+    metadata:
+      labels:
+        app: ac-worldserver
+    spec:
+      containers:
+        - name: ac-worldserver
+          image: {{ .Values.worldserver.image }}  # L'image du service ac-worldserver
+          stdin: true
+          tty: true
+          envFrom:
+            - configMapRef:
+                name: ac-worldserver-config
+          ports:
+            - containerPort: 8085
+            - containerPort: 7878
+          volumeMounts:
+            - mountPath: /azerothcore/env/dist/data
+              name: client-data
+              readOnly: true  # Mount en lecture seule
+          resources:
+            requests:
+              memory: "512M"       # Le conteneur demande au moins 1 Go de RAM
+              cpu: "500m"         # Le conteneur demande 0.5 vCPU (un demi processeur)
+            limits:
+              memory: "2Gi"       # Le conteneur ne pourra pas utiliser plus de 2 Go de RAM
+              cpu: "1"            # Le conteneur ne pourra pas utiliser plus de 1 vCPU (un processeur complet)
+      restartPolicy: Always
+
+      volumes:  # ❗️ La section volumes doit être DANS spec.template.spec
+        - name: client-data
+          persistentVolumeClaim:
+            claimName: {{ .Values.worldserver.pvc.pvc_name }}  # PVC du client, à adapter si nécessaire
+

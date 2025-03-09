@@ -1,0 +1,27 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: ac-db-import
+  namespace: {{ .Release.Namespace }}  # Utilisation du namespace du chart Helm
+spec:
+  template:
+    metadata:
+      name: ac-db-import
+    spec:
+      containers:
+        - name: ac-db-import
+          image: {{ .Values.dbImport.image }}  # L'image du job, définie dans le values.yaml
+          env:
+            - name: DB_HOST
+              value: "ac-db-service"  # Service de base de données dans Kubernetes
+            - name: DB_PORT
+              value: "3306"
+            - name: DB_NAME
+              value: "azerothcore"  # Nom de la base de données
+            - name: DB_USER
+              value: "root"
+            - name: DB_PASSWORD
+              value: "password"
+      restartPolicy: Never
+  backoffLimit: 4
+

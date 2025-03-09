@@ -1,0 +1,12 @@
+worldserver:
+  image: "landry41/ac-wotlk-worldserver:master"
+  pvc:
+    pvc_name: "wow-client-data-pvc"
+  db:
+    host: "ac-db-service"
+    port: "3306"
+    user: "root"
+    password: "password"
+    auth_schema: "acore_auth"
+    world_schema: "acore_world"
+    characters_schema: "acore_characters"

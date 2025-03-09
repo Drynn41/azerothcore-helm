@@ -1,0 +1,23 @@
+namespace: wow-dev
+
+replicaCount: 1
+
+pvc:
+  pvc_name: wow-db-data-wow-db-0
+image:
+  repository: mysql # ou mariadb si tu utilises cela
+  tag: "8.4"
+  pullPolicy: IfNotPresent
+
+persistence:
+  enabled: true
+  storageClass: wow-db-storage
+  size: 10Gi
+
+service:
+  name: wow-db
+  port: 3306
+  type: ClusterIP
+
+mysqlRootPassword: password
+
