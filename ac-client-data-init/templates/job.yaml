@@ -1,0 +1,22 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: ac-client-data-init
+spec:
+  template:
+    metadata:
+      name: ac-client-data-init
+    spec:
+      containers:
+        - name: ac-client-data-init
+          image: azerothcore/azerothcore-wotlk:latest # Assure-toi d'utiliser la bonne image Docker
+          command: ["/bin/bash", "-c", "/usr/local/bin/ac-client-data-init.sh"]  # Le script ou la commande pour initialiser les données
+          volumeMounts:
+            - mountPath: /srv/data
+              name: client-data
+      restartPolicy: OnFailure # Nous ne voulons pas redémarrer le job si tout se passe bien
+  backoffLimit: 4  # Nombre maximal de tentatives avant que Kubernetes n'abandonne
+  volumes:
+    - name: client-data
+      persistentVolumeClaim:
+        claimName: wow-client-data-pvc  # PVC du client, à adapter si nécessaire
