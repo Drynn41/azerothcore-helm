@@ -1,28 +1,28 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: ac-worldserver
-  namespace: {{ .Release.Namespace }}
+  name: {{ .Chart.Name }}
+  namespace: {{ .Values.namespace }}
   labels:
-    app: ac-worldserver
+    app: {{ .Chart.Name }}
 spec:
-  replicas: 1
+  replicas: {{ .Values.worldserver.replicaCount }}
   selector:
     matchLabels:
-      app: ac-worldserver
+      app: {{ .Chart.Name }}
   template:
     metadata:
       labels:
-        app: ac-worldserver
+        app: {{ .Chart.Name }}
     spec:
       containers:
-        - name: ac-worldserver
-          image: {{ .Values.worldserver.image }}  # L'image du service ac-worldserver
+        - name: {{ .Chart.Name }}
+          image: {{ .Values.worldserver.image }}  # L'image du service {{ .Chart.Name }}
           stdin: true
           tty: true
           envFrom:
             - configMapRef:
-                name: ac-worldserver-config
+                name: "{{ .Chart.Name }}-config"
           ports:
             - containerPort: 8085
             - containerPort: 7878
@@ -32,11 +32,11 @@ spec:
               readOnly: true  # Mount en lecture seule
           resources:
             requests:
-              memory: "512M"       # Le conteneur demande au moins 1 Go de RAM
-              cpu: "500m"         # Le conteneur demande 0.5 vCPU (un demi processeur)
+              memory: {{ .Values.worldserver.resources.requests.memory }}       # Le conteneur demande au moins 1 Go de RAM
+              cpu: {{ .Values.worldserver.resources.requests.cpu }}         # Le conteneur demande 0.5 vCPU (un demi processeur)
             limits:
-              memory: "2Gi"       # Le conteneur ne pourra pas utiliser plus de 2 Go de RAM
-              cpu: "1"            # Le conteneur ne pourra pas utiliser plus de 1 vCPU (un processeur complet)
+              memory: {{ .Values.worldserver.resources.limits.memory }}        # Le conteneur ne pourra pas utiliser plus de 2 Go de RAM
+              cpu: {{ .Values.worldserver.resources.limits.cpu }}
       restartPolicy: Always
 
       volumes:  # ❗️ La section volumes doit être DANS spec.template.spec

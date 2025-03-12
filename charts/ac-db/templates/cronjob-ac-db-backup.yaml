@@ -2,7 +2,7 @@ apiVersion: batch/v1
 kind: CronJob
 metadata:
   name: ac-db-backup
-  namespace: {{ .Release.Namespace }}
+  namespace: {{ .Values.namespace }}
 spec:
   schedule: "0 3 * * *"  # Exécution tous les jours à 3h du matin
   jobTemplate:
@@ -12,9 +12,9 @@ spec:
           containers:
             - name: mysql-backup
               image: mysql:8.4  # Assurez-vous d'utiliser la bonne version
-              env:
-                - name: MYSQL_ROOT_PASSWORD
-                  value: {{ .Values.ac-db.mysqlRootPassword }}
+              envFrom:
+                - configMapRef:
+                    name: ac-db-config
               command:
                 - "/bin/sh"
                 - "-c"

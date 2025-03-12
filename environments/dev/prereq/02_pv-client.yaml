@@ -1,0 +1,15 @@
+---
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: wow-client-data-iac-pv
+spec:
+  capacity:
+    storage: 10Gi  # Ajuste la taille si nécessaire
+  accessModes:
+    - ReadWriteOnce
+  persistentVolumeReclaimPolicy: Retain
+  storageClassName: wow-client-storage-iac  # Ici, on définit la StorageClass
+  hostPath:
+    path: /srv/data/wow-client-data-iac-pv  # Le point de montage sur ton nœud pour les fichiers client
+

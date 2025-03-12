@@ -1,35 +1,35 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: ac-auth
-  namespace: {{ .Release.Namespace }}
+  name: {{ .Chart.Name }}
+  namespace: {{ .Values.namespace }}
   labels:
-    app: ac-auth
+    app: {{ .Chart.Name }}
 spec:
-  replicas: 1
+  replicas: {{ .Values.auth.replicaCount }}
   selector:
     matchLabels:
-      app: ac-auth
+      app: {{ .Chart.Name }}
   template:
     metadata:
       labels:
-        app: ac-auth
+        app: {{ .Chart.Name }}
     spec:
       containers:
-        - name: ac-auth
+        - name: {{ .Chart.Name }}
           image: {{ .Values.auth.image }}  # L'image du service ac-worldserver
           stdin: true
           tty: true
           envFrom:
             - configMapRef:
-                name: ac-auth-config
+                name: "{{ .Chart.Name }}-config"
           ports:
             - containerPort: 3724
           resources:
             requests:
-              memory: "256M"       # Le conteneur demande au moins 1 Go de RAM
-              cpu: "100m"         # Le conteneur demande 0.5 vCPU (un demi processeur)
+              memory: {{ .Values.auth.resources.requests.memory }}       # Le conteneur demande au moins 1 Go de RAM
+              cpu: {{ .Values.auth.resources.requests.cpu }}         # Le conteneur demande 0.5 vCPU (un demi processeur)
             limits:
-              memory: "512M"       # Le conteneur ne pourra pas utiliser plus de 2 Go de RAM
-              cpu: "500m"
+              memory: {{ .Values.auth.resources.limits.memory }}        # Le conteneur ne pourra pas utiliser plus de 2 Go de RAM
+              cpu: {{ .Values.auth.resources.limits.cpu }}
       restartPolicy: Always

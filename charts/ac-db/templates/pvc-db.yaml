@@ -1,13 +1,13 @@
 apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
-  name: {{ .Values.ac-db.pvc.pvc_name }}
+  name: {{ .Values.ac_db.pvc.pvc_name }}
   namespace: {{ .Values.namespace }}  # Utilisation du namespace spécifié dans values.yaml
 spec:
   accessModes:
     - ReadWriteOnce
   resources:
     requests:
-      storage: {{ .Values.ac-db.persistence.size }}
-  storageClassName: {{ .Values.ac-db.persistence.storageClass }}
+      storage: {{ .Values.ac_db.persistence.size }}
+  storageClassName: {{ .Values.ac_db.persistence.storageClass }}
 

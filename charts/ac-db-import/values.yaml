@@ -1,9 +1,0 @@
-namespace: wow-dev
-
-replicaCount: 1
-
-image:
-  repository: landry41/ac-wotlk-db-import # ou mariadb si tu utilises cela
-  tag: "master"
-  pullPolicy: IfNotPresent
-

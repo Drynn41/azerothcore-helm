@@ -1,0 +1,15 @@
+---
+environments:
+  # dev:
+  #   values:
+  #     - environments/dev/values.yaml
+  iac:
+    values:
+      - environments/iac/values.yaml
+---
+releases:
+  - name: azerothcore
+    chart: ./Chart.yaml
+    namespace: {{ .Environment.Namespace }}  # Cela récupère le namespace spécifique de l'environnement
+    values:
+      - "{{ .Environment.Values }}"

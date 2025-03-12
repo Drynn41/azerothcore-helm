@@ -1,6 +1,7 @@
+---
 apiVersion: storage.k8s.io/v1
 kind: StorageClass
 metadata:
-  name: wow-client-storage
+  name: wow-client-storage-iac
 provisioner: kubernetes.io/no-provisioner   # Utilise cette option si tu utilises un volume statique
 

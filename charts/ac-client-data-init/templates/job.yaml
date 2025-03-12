@@ -1,16 +1,16 @@
 apiVersion: batch/v1
 kind: Job
 metadata:
-  name: ac-client-data-init
+  name: {{ .Chart.Name }}
 spec:
   backoffLimit: 4  # Nombre maximal de tentatives avant que Kubernetes n'abandonne
   template:
     metadata:
-      name: ac-client-data-init
+      name: {{ .Chart.Name }}
     spec:
       containers:
-        - name: ac-client-data-init
-          image: landry41/ac-wotlk-client-data:master # Assure-toi d'utiliser la bonne image Docker
+        - name: {{ .Chart.Name }}
+          image: "{{ .Values.ac_data_init.image.repository }}:{{ .Values.ac_data_init.image.tag }}" # Assure-toi d'utiliser la bonne image Docker
           volumeMounts:
             - mountPath: /azerothcore/env/dist/data
               name: client-data
@@ -18,5 +18,5 @@ spec:
       volumes:  # ❗️ La section volumes doit être DANS spec.template.spec
         - name: client-data
           persistentVolumeClaim:
-            claimName: {{ .Values.pvc.pvc_name }}  # PVC du client, à adapter si nécessaire
+            claimName: {{ .Values.ac_data_init.pvc.pvc_name }}  # PVC du client, à adapter si nécessaire
 

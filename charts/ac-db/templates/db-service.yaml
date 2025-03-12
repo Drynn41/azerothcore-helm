@@ -1,14 +1,14 @@
 apiVersion: v1
 kind: Service
 metadata:
-  name: {{ .Values.ac-db.service.name }}
+  name: {{ .Values.ac_db.service.name }}
   labels:
-    app: {{ .Values.ac-db.name }}
+    app: {{ .Values.ac_db.name }}
 spec:
   clusterIP: None  # Headless service
   ports:
-    - port: {{ .Values.ac-db.service.port }}  # Port de la base de données
-      targetPort: {{ .Values.ac-db.service.targetPort }}
+    - port: {{ .Values.ac_db.service.port }}  # Port de la base de données
+      targetPort: {{ .Values.ac_db.service.targetPort }}
   selector:
-    app: {{ .Values.ac-db.name }}
+    app: {{ .Values.ac_db.name }}
 

@@ -1,0 +1,72 @@
+namespace: wow-dev
+
+auth:
+  image: "landry41/ac-wotlk-authserver:master"
+  db:
+    host: "ac-db-service"
+    port: "3306"
+    user: "root"
+    password: "password"
+    auth_schema: "acore_auth"
+    world_schema: "acore_world"
+    characters_schema: "acore_characters"
+  replicaCount: 1
+
+ac-data-init:
+  pvc:
+    pvc_name: wow-client-data-pvc
+  image:
+    repository: landry41/ac-wotlk-client-data # ou mariadb si tu utilises cela
+    tag: "master"
+    pullPolicy: IfNotPresent
+  replicaCount: 1
+  persistence:
+    enabled: true
+    storageClass: wow-client-storage
+    size: 10Gi
+
+ac-db:
+  name: wow-db
+  service:
+    name: ac-db-service
+    port: 3306
+    targetPort: 3306
+  pvc:
+    pvc_name: wow-db-data-wow-db-0
+  image:
+    repository: mysql # ou mariadb si tu utilises cela
+    tag: "8.4"
+    pullPolicy: IfNotPresent
+
+  persistence:
+    enabled: true
+    storageClass: wow-db-storage
+    size: 10Gi
+
+  mysqlRootPassword: password
+
+ac-db-import:
+  name: ac-db-import
+  image:
+    repository: landry41/ac-wotlk-db-import # ou mariadb si tu utilises cela
+    tag: "master"
+    pullPolicy: IfNotPresent
+  env:
+    DB_HOST: "ac-db-service"
+    DB_PORT: "3306"
+    DB_NAME: "azerothcore"
+    DB_USER: "root"
+    DB_PASSWORD: "password"
+
+worldserver:
+  image: "landry41/ac-wotlk-worldserver:master"
+  pvc:
+    pvc_name: "wow-client-data-pvc"
+  db:
+    host: "ac-db-service"
+    port: "3306"
+    user: "root"
+    password: "password"
+    auth_schema: "acore_auth"
+    world_schema: "acore_world"
+    characters_schema: "acore_characters"

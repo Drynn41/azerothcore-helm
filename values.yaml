@@ -1,0 +1,10 @@
+ac-worldserver:
+  enabled: false
+ac-auth:
+  enabled: false
+ac-db-import:
+  enabled: false
+ac-client-data-init:
+  enabled: true
+ac-db:
+  enabled: false

@@ -1,38 +1,39 @@
+---
 apiVersion: apps/v1
 kind: StatefulSet
 metadata:
-  name: {{ .Values.ac-db.name }}
-  namespace: {{ .Values.namespace }}  # Utilisation du namespace spécifié dans values.yaml
+  name: {{ .Chart.Name }}
+  namespace: {{ .Values.namespace }}
 spec:
-  serviceName: {{ .Values.ac-db.service.name }}
-  replicas: {{ .Values.replicaCount }}
+  serviceName: {{ .Values.ac_db.service.name }}
+  replicas: {{ .Values.ac_db.replicaCount }}
   selector:
     matchLabels:
-      app: {{ .Values.ac-db.name }}
+      app: {{ .Chart.Name }}
   template:
     metadata:
       labels:
-        app: {{ .Values.ac-db.name }}
+        app: {{ .Chart.Name }}
     spec:
       containers:
-        - name: {{ .Values.ac-db.name }}
-          image: {{ .Values.ac-db.image.repository }}:{{ .Values.ac-db.image.tag }}
+        - name: {{ .Chart.Name }}
+          image: "{{ .Values.ac_db.image.repository }}:{{ .Values.ac_db.image.tag }}"
+          imagePullPolicy: {{ .Values.ac_db.image.pullPolicy }}
           ports:
-            - containerPort: {{ .Values.ac-db.service.port }}
-          env:
-            - name: MYSQL_ROOT_PASSWORD
-              value: {{ .Values.ac-db.mysqlRootPassword }}
+            - containerPort: {{ .Values.ac_db.service.port }}
+          envFrom:
+            - configMapRef:
+                name: "{{ .Chart.Name }}-config"
           volumeMounts:
-            - name: {{ .Values.ac-db.name }}-data
+            - name: "{{ .Chart.Name }}-data"
               mountPath: /var/lib/mysql
   volumeClaimTemplates:
     - metadata:
-        name: {{ .Values.ac-db.name }}-data
+        name: "{{ .Chart.Name }}-data"
       spec:
         accessModes:
           - ReadWriteOnce
         resources:
           requests:
-            storage: {{ .Values.persistence.size }}
-        storageClassName: {{ .Values.persistence.storageClass }}
-
+            storage: {{ .Values.ac_db.persistence.size }}
+        storageClassName: {{ .Values.ac_db.persistence.storageClass }}
