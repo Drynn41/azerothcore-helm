@@ -1,0 +1,24 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: {{ .Values.ac-db-import.name }}
+  namespace: {{ .Release.Namespace }}  # Utilisation du namespace du chart Helm
+spec:
+  template:
+    metadata:
+      name: {{ .Values.ac-db-import.name }}
+    spec:
+      containers:
+        - name: {{ .Values.ac-db-import.name }}
+          image: {{ .Values.ac-db-import.image }}  # L'image du job, définie dans le values.yaml
+          env:
+            - name: "AC_LOGIN_DATABASE_INFO"
+              value: "{{ .Values.ac-db-import.env.DB_HOST }};{{ .Values.ac-db-import.env.DB_PORT }};{{ .Values.ac-db-import.env.DB_USER }};{{ .Values.ac-db-import.env.DB_PASSWORD }};acore_auth"
+            - name: "AC_WORLD_DATABASE_INFO"
+              value: "{{ .Values.ac-db-import.env.DB_HOST }};{{ .Values.ac-db-import.env.DB_PORT }};{{ .Values.ac-db-import.env.DB_USER }};{{ .Values.ac-db-import.env.DB_PASSWORD }};acore_world"
+            - name: "AC_CHARACTER_DATABASE_INFO"
+              value: "{{ .Values.ac-db-import.env.DB_HOST }};{{ .Values.ac-db-import.env.DB_PORT }};{{ .Values.ac-db-import.env.DB_USER }};{{ .Values.ac-db-import.env.DB_PASSWORD }};acore_characters"
+
+      restartPolicy: Never
+  backoffLimit: 4
+
