@@ -1,6 +1,7 @@
 ---
 # Default values for iac.
 # This is a YAML-formatted file.
+env: iac
 namespace: wow-iac
 
 
@@ -22,7 +23,7 @@ auth:
 
 ac_data_init:
   pvc:
-    pvc_name: wow-client-data-iac-pvc
+    pvc_name: pvc-iac-wow-client-data
   image:
     repository: landry41/ac-wotlk-client-data # ou mariadb si tu utilises cela
     tag: "master"
@@ -42,7 +43,7 @@ ac_db:
     port: 3306
     targetPort: 3306
   pvc:
-    pvc_name: wow-db-data-wow-db-0-iac
+    pvc_name: "pvc-iac"
   image:
     repository: mysql
     tag: "8.4"

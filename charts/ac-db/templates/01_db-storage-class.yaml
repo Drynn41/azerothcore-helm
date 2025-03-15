@@ -2,6 +2,6 @@
 apiVersion: storage.k8s.io/v1
 kind: StorageClass
 metadata:
-  name: wow-db-storage-dev
+  name: "wow-db-storage-{{ .Values.env }}"
 provisioner: kubernetes.io/no-provisioner   # Comme pour le client, utilise cette option si le volume est statique
 

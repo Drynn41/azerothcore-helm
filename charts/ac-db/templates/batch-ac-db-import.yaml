@@ -10,7 +10,7 @@ spec:
     spec:
       containers:
         - name: {{ .Values.ac_db_import.name }}
-          image: {{ .Values.ac_db_import.image }}  # L'image du job, définie dans le values.yaml
+          image: '{{ .Values.ac_db_import.image.repository }}:{{.Values.ac_db_import.image.tag }}'  # L'image du job, définie dans le values.yaml
           envFrom:
             - configMapRef:
                 name: ac-db-config

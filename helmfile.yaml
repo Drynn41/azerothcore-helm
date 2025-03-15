@@ -10,6 +10,6 @@ environments:
 releases:
   - name: azerothcore
     chart: ./Chart.yaml
-    namespace: {{ .Environment.Namespace }}  # Cela récupère le namespace spécifique de l'environnement
+    namespace: {{ .Values.namespace }}  # Cela récupère le namespace spécifique de l'environnement
     values:
       - "{{ .Environment.Values }}"
