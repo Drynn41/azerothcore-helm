@@ -1,0 +1,20 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: {{ .Values.ac_db_import.name }}
+  namespace: {{ .Values.namespace }}  # Utilisation du namespace du chart Helm
+spec:
+  template:
+    metadata:
+      name: {{ .Values.ac_db_import.name }}
+    spec:
+      containers:
+        - name: {{ .Values.ac_db_import.name }}
+          image: '{{ .Values.ac_db_import.image.repository }}:{{.Values.ac_db_import.image.tag }}'  # L'image du job, définie dans le values.yaml
+          envFrom:
+            - configMapRef:
+                name: ac-db-config
+
+      restartPolicy: Never
+  backoffLimit: 4
+

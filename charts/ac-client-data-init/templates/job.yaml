@@ -1,0 +1,23 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: {{ .Chart.Name }}
+  namespace: {{ .Values.namespace }}
+spec:
+  backoffLimit: 4  # Nombre maximal de tentatives avant que Kubernetes n'abandonne
+  template:
+    metadata:
+      name: {{ .Chart.Name }}
+    spec:
+      containers:
+        - name: {{ .Chart.Name }}
+          image: "{{ .Values.ac_data_init.image.repository }}:{{ .Values.ac_data_init.image.tag }}" # Assure-toi d'utiliser la bonne image Docker
+          volumeMounts:
+            - mountPath: /azerothcore/env/dist/data
+              name: {{ .Values.ac_data_init.pvc.pvc_name }}
+      restartPolicy: OnFailure # Nous ne voulons pas redémarrer le job si tout se passe bien
+      volumes:  # ❗️ La section volumes doit être DANS spec.template.spec
+        - name: {{ .Values.ac_data_init.pvc.pvc_name }}
+          persistentVolumeClaim:
+            claimName: {{ .Values.ac_data_init.pvc.pvc_name }}  # PVC du client, à adapter si nécessaire
+

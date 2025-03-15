@@ -1,0 +1,13 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: "{{ .Chart.Name }}-config"
+  namespace: {{ .Values.namespace }}
+data:
+  AC_LOGIN_DATABASE_INFO: "{{ .Values.db.host }};{{ .Values.db.port }};{{ .Values.db.user }};{{ .Values.db.password }};{{ .Values.db.auth_schema }}"
+  AC_DATA_DIR: "/azerothcore/env/dist/data"
+  AC_LOGS_DIR: "/azerothcore/env/dist/logs"
+  USER_CONF_PATH: "/azerothcore/apps/docker/config-docker.sh"
+  DATAPATH: "/azerothcore/env/dist/data"
+  CTYPE: "RelWithDebInfo"
+  CSCRIPTS: "static"

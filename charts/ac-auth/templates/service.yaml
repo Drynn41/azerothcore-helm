@@ -1,0 +1,15 @@
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ .Chart.Name }}
+  namespace: {{ .Values.namespace }}
+spec:
+  ports:
+    - name: auth-port  # Nom du port pour la connexion WorldServer
+      port: {{ .Values.auth.service.port }}
+      targetPort: {{ .Values.auth.service.targetPort }}
+      nodePort: {{ .Values.auth.service.nodePort }}
+  selector:
+    app: {{ .Chart.Name }}
+  type: NodePort

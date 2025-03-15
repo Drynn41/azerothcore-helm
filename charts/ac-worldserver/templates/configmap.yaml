@@ -1,0 +1,13 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: "{{ .Chart.Name }}-config"
+  namespace: {{ .Values.namespace }}
+data:
+  AC_LOGIN_DATABASE_INFO: "{{ .Values.db.host }};{{ .Values.db.port }};{{ .Values.db.user }};{{ .Values.db.password }};{{ .Values.db.auth_schema }}"
+  AC_WORLD_DATABASE_INFO: "{{ .Values.db.host }};{{ .Values.db.port }};{{ .Values.db.user }};{{ .Values.db.password }};{{ .Values.db.world_schema }}"
+  AC_CHARACTER_DATABASE_INFO: "{{ .Values.db.host }};{{ .Values.db.port }};{{ .Values.db.user }};{{ .Values.db.password }};{{ .Values.db.characters_schema }}"
+  AC_DATA_DIR: "/azerothcore/env/dist/data"
+  AC_LOGS_DIR: "/azerothcore/env/dist/logs"
+  AC_WORLD_SERVER_PORT: "{{ .Values.worldserver.service.worldserver.port }}"
+

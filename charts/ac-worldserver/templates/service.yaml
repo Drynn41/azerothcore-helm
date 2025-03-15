@@ -1,0 +1,20 @@
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ .Chart.Name }}
+  namespace: {{ .Values.namespace }}
+spec:
+  ports:
+    - name: worldserver-port  # Nom du port pour la connexion WorldServer
+      port: {{ .Values.worldserver.service.worldserver.port }}
+      targetPort: {{ .Values.worldserver.service.worldserver.targetPort }}
+      nodePort: {{ .Values.worldserver.service.worldserver.nodePort }}
+    - name: soap-port  # Nom du port pour la connexion SOAP
+      port: {{ .Values.worldserver.service.soap.port }}
+      targetPort: {{ .Values.worldserver.service.soap.targetPort }}
+      nodePort: {{ .Values.worldserver.service.soap.nodePort }}
+  selector:
+    app: {{ .Chart.Name }}
+      #cluserIP: None
+  type: NodePort

@@ -1,0 +1,53 @@
+---
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: {{ .Chart.Name }}
+  namespace: {{ .Values.namespace }}
+spec:
+  serviceName: {{ .Values.ac_db.service.name }}
+  replicas: {{ .Values.ac_db.replicaCount }}
+  selector:
+    matchLabels:
+      app: {{ .Chart.Name }}
+  template:
+    metadata:
+      labels:
+        app: {{ .Chart.Name }}
+    spec:
+      containers:
+        - name: {{ .Chart.Name }}
+          image: "{{ .Values.ac_db.image.repository }}:{{ .Values.ac_db.image.tag }}"
+          imagePullPolicy: {{ .Values.ac_db.image.pullPolicy }}
+          ports:
+            - containerPort: {{ .Values.ac_db.service.port }}
+          envFrom:
+            - configMapRef:
+                name: "{{ .Chart.Name }}-config"
+          volumeMounts:
+            - name: {{ .Values.ac_db.pvc.pvc_name }}
+              mountPath: /var/lib/mysql
+          livenessProbe:
+            exec:
+              command: ["mysqladmin", "ping", "-h", "localhost"]
+            initialDelaySeconds: 30
+            periodSeconds: 10
+            timeoutSeconds: 5
+            failureThreshold: 3
+          readinessProbe:
+            exec:
+              command: ["mysqladmin", "ping", "-h", "localhost"]
+            initialDelaySeconds: 5
+            periodSeconds: 5
+            timeoutSeconds: 3
+            failureThreshold: 3
+  volumeClaimTemplates:
+    - metadata:
+        name: {{ .Values.ac_db.pvc.pvc_name }}
+      spec:
+        accessModes:
+          - ReadWriteOnce
+        resources:
+          requests:
+            storage: {{ .Values.ac_db.persistence.size }}
+        storageClassName: {{ .Values.ac_db.persistence.storageClass }}

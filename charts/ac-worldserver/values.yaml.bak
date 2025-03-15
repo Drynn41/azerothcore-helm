@@ -1,0 +1,30 @@
+namespace: wow-iac
+worldserver:
+  image: "landry41/ac-wotlk-worldserver:master"
+  replicaCount: 1
+  pvc:
+    pvc_name: "wow-client-data-iac-pvc"
+  resources:
+    requests:
+      memory: "512M"       # Le conteneur demande au moins 1 Go de RAM
+      cpu: "500m"         # Le conteneur demande 0.5 vCPU (un demi processeur)
+    limits:
+      memory: "2Gi"       # Le conteneur ne pourra pas utiliser plus de 2 Go de RAM
+      cpu: "1"            # Le conteneur ne pourra pas utiliser plus de 1 vCPU (un processeur complet)
+  service:
+    worldserver:
+      port: 8085
+      targetPort: 8085
+      nodePort: 32200
+    soap:
+      port: 7878
+      targetPort: 7878
+      nodePort: 32201
+db:
+  host: "ac-db-service"
+  port: "3306"
+  user: "root"
+  password: "password"
+  auth_schema: "acore_auth"
+  world_schema: "acore_world"
+  characters_schema: "acore_characters"
