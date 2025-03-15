@@ -28,7 +28,7 @@ spec:
             - containerPort: 7878
           volumeMounts:
             - mountPath: /azerothcore/env/dist/data
-              name: client-data
+              name: {{ .Values.worldserver.pvc.pvc_name }}
               readOnly: true  # Mount en lecture seule
           resources:
             requests:
@@ -40,7 +40,7 @@ spec:
       restartPolicy: Always
 
       volumes:  # ❗️ La section volumes doit être DANS spec.template.spec
-        - name: client-data
+        - name: {{ .Values.worldserver.pvc.pvc_name }}
           persistentVolumeClaim:
             claimName: {{ .Values.worldserver.pvc.pvc_name }}  # PVC du client, à adapter si nécessaire
 
