@@ -73,7 +73,7 @@ worldserver:
   image: "landry41/ac-wotlk-worldserver:master"
   replicaCount: 1
   pvc:
-    pvc_name: "wow-client-data-iac-pvc"
+    pvc_name: "pvc-iac-wow-client-data"
   resources:
     requests:
       memory: "512M"       # Le conteneur demande au moins 1 Go de RAM

@@ -24,8 +24,8 @@ spec:
             - configMapRef:
                 name: "{{ .Chart.Name }}-config"
           ports:
-            - containerPort: 8085
-            - containerPort: 7878
+            - containerPort: {{ .Values.worldserver.service.worldserver.port }}
+            - containerPort: {{ .Values.worldserver.service.soap.port }}
           volumeMounts:
             - mountPath: /azerothcore/env/dist/data
               name: client-data
