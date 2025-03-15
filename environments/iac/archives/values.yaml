@@ -1,0 +1,101 @@
+---
+# Default values for iac.
+# This is a YAML-formatted file.
+namespace: wow-iac
+
+
+auth:
+  image: "landry41/ac-wotlk-authserver:master"
+  replicaCount: 1
+  resources:
+    requests:
+      memory: "256M"       # Le conteneur demande au moins 1 Go de RAM
+      cpu: "100m"         # Le conteneur demande 0.5 vCPU (un demi processeur)
+    limits:
+      memory: "512M"       # Le conteneur ne pourra pas utiliser plus de 2 Go de RAM
+      cpu: "500m"
+  service:
+    port: 3724
+    targetPort: 3724
+    nodePort: 30000
+
+
+ac_data_init:
+  pvc:
+    pvc_name: wow-client-data-iac-pvc
+  image:
+    repository: landry41/ac-wotlk-client-data # ou mariadb si tu utilises cela
+    tag: "master"
+    pullPolicy: IfNotPresent
+  replicaCount: 1
+  persistence:
+    enabled: true
+    storageClass: wow-client-storage-iac
+    size: 10Gi
+
+
+ac_db:
+  name: wow-db
+  replicaCount: 1
+  service:
+    name: ac-db-service
+    port: 3306
+    targetPort: 3306
+  pvc:
+    pvc_name: wow-db-data-wow-db-0-iac
+  image:
+    repository: mysql
+    tag: "8.4"
+    pullPolicy: IfNotPresent
+  persistence:
+    enabled: true
+    storageClass: wow-db-storage-iac
+    size: 10Gi
+  mysqlRootPassword: password
+
+
+ac_db_import:
+  name: ac-db-import
+  image:
+    repository: landry41/ac-wotlk-db-import # ou mariadb si tu utilises cela
+    tag: "master"
+    pullPolicy: IfNotPresent
+  env:
+    DB_HOST: "ac-db-service"
+    DB_PORT: "3306"
+    DB_NAME: "azerothcore"
+    DB_USER: "root"
+    DB_PASSWORD: "password"
+
+
+worldserver:
+  image: "landry41/ac-wotlk-worldserver:master"
+  replicaCount: 1
+  pvc:
+    pvc_name: "wow-client-data-iac-pvc"
+  resources:
+    requests:
+      memory: "512M"       # Le conteneur demande au moins 1 Go de RAM
+      cpu: "500m"         # Le conteneur demande 0.5 vCPU (un demi processeur)
+    limits:
+      memory: "2Gi"       # Le conteneur ne pourra pas utiliser plus de 2 Go de RAM
+      cpu: "1"            # Le conteneur ne pourra pas utiliser plus de 1 vCPU (un processeur complet)
+  service:
+    worldserver:
+      port: 8085
+      targetPort: 8085
+      nodePort: 32200
+    soap:
+      port: 7878
+      targetPort: 7878
+      nodePort: 32201
+
+
+db:
+  host: "ac-db-service"
+  port: "3306"
+  user: "root"
+  password: "password"
+  auth_schema: "acore_auth"
+  world_schema: "acore_world"
+  characters_schema: "acore_characters"

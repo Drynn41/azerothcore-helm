@@ -8,7 +8,7 @@ spec:
     storage: 10Gi  # Ajuste la taille si nécessaire
   accessModes:
     - ReadWriteOnce
-  persistentVolumeReclaimPolicy: Retain
+  persistentVolumeReclaimPolicy: Delete
   storageClassName: {{ .Values.ac_db.persistence.storageClass }}  # Ici, on définit la StorageClass
   hostPath:
     path: "/srv/data/wow-db-data-{{ .Values.env }}-pv"  # Le point de montage sur ton nœud pour la base de données
