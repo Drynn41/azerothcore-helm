@@ -59,3 +59,18 @@ db:
   auth_schema: "acore_auth"
   world_schema: "acore_world_dev"
   characters_schema: "acore_characters_dev"
+
+cms:
+  image: "landry41/blizcms:v1.2.1"
+  replicaCount: 1
+  resources:
+    requests:
+      memory: "256M"       # Le conteneur demande au moins 1 Go de RAM
+      cpu: "100m"         # Le conteneur demande 0.5 vCPU (un demi processeur)
+    limits:
+      memory: "512M"       # Le conteneur ne pourra pas utiliser plus de 2 Go de RAM
+      cpu: "500m"
+  service:
+    port: 80
+    targetPort: 80
+    nodePort: 32203

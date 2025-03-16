@@ -1,0 +1,35 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ .Chart.Name }}
+  namespace: {{ .Values.namespace }}
+  labels:
+    app: {{ .Chart.Name }}
+spec:
+  replicas: {{ .Values.cms.replicaCount }}
+  selector:
+    matchLabels:
+      app: {{ .Chart.Name }}
+  template:
+    metadata:
+      labels:
+        app: {{ .Chart.Name }}
+    spec:
+      containers:
+        - name: {{ .Chart.Name }}
+          image: {{ .Values.cms.image }}  # L'image du service ac-worldserver
+          stdin: true
+          tty: true
+          envFrom:
+            - configMapRef:
+                name: "{{ .Chart.Name }}-config"
+          ports:
+            - containerPort: 80
+          resources:
+            requests:
+              memory: {{ .Values.cms.resources.requests.memory }}       # Le conteneur demande au moins 1 Go de RAM
+              cpu: {{ .Values.cms.resources.requests.cpu }}         # Le conteneur demande 0.5 vCPU (un demi processeur)
+            limits:
+              memory: {{ .Values.cms.resources.limits.memory }}        # Le conteneur ne pourra pas utiliser plus de 2 Go de RAM
+              cpu: {{ .Values.cms.resources.limits.cpu }}
+      restartPolicy: Always
