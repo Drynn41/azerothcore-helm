@@ -31,6 +31,8 @@ worldserver:
   replicaCount: 1
   pvc:
     pvc_name: "pvc-iac-wow-client-data"
+  server_env:
+    realmlist: 2
   resources:
     requests:
       memory: "512M"       # Le conteneur demande au moins 1 Go de RAM
