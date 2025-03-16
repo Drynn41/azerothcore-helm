@@ -1,20 +1,12 @@
+---
+# Default values for dev.
+# This is a YAML-formatted file.
+env: dev
 namespace: wow-dev
 
-auth:
-  image: "landry41/ac-wotlk-authserver:master"
-  db:
-    host: "ac-db-service"
-    port: "3306"
-    user: "root"
-    password: "password"
-    auth_schema: "acore_auth"
-    world_schema: "acore_world"
-    characters_schema: "acore_characters"
-  replicaCount: 1
-
-ac-data-init:
+ac_data_init:
   pvc:
-    pvc_name: wow-client-data-pvc
+    pvc_name: pvc-dev-wow-client-data
   image:
     repository: landry41/ac-wotlk-client-data # ou mariadb si tu utilises cela
     tag: "master"
@@ -22,51 +14,46 @@ ac-data-init:
   replicaCount: 1
   persistence:
     enabled: true
-    storageClass: wow-client-storage
+    storageClass: wow-client-storage-dev
     size: 10Gi
 
-ac-db:
-  name: wow-db
-  service:
-    name: ac-db-service
-    port: 3306
-    targetPort: 3306
-  pvc:
-    pvc_name: wow-db-data-wow-db-0
-  image:
-    repository: mysql # ou mariadb si tu utilises cela
-    tag: "8.4"
-    pullPolicy: IfNotPresent
 
-  persistence:
-    enabled: true
-    storageClass: wow-db-storage
-    size: 10Gi
-
-  mysqlRootPassword: password
-
-ac-db-import:
+ac_db_import:
   name: ac-db-import
   image:
     repository: landry41/ac-wotlk-db-import # ou mariadb si tu utilises cela
     tag: "master"
     pullPolicy: IfNotPresent
-  env:
-    DB_HOST: "ac-db-service"
-    DB_PORT: "3306"
-    DB_NAME: "azerothcore"
-    DB_USER: "root"
-    DB_PASSWORD: "password"
+
 
 worldserver:
   image: "landry41/ac-wotlk-worldserver:master"
+  replicaCount: 1
   pvc:
-    pvc_name: "wow-client-data-pvc"
-  db:
-    host: "ac-db-service"
-    port: "3306"
-    user: "root"
-    password: "password"
-    auth_schema: "acore_auth"
-    world_schema: "acore_world"
-    characters_schema: "acore_characters"
+    pvc_name: "pvc-dev-wow-client-data"
+  resources:
+    requests:
+      memory: "512M"       # Le conteneur demande au moins 1 Go de RAM
+      cpu: "500m"         # Le conteneur demande 0.5 vCPU (un demi processeur)
+    limits:
+      memory: "2Gi"       # Le conteneur ne pourra pas utiliser plus de 2 Go de RAM
+      cpu: "1"            # Le conteneur ne pourra pas utiliser plus de 1 vCPU (un processeur complet)
+  service:
+    worldserver:
+      port: 8085
+      targetPort: 8085
+      nodePort: 32200
+    soap:
+      port: 7878
+      targetPort: 7878
+      nodePort: 32201
+
+
+db:
+  host: "ac-db-service.wow-mutu.svc.cluster.local"
+  port: "3306"
+  user: "root"
+  password: "password"
+  auth_schema: "acore_auth"
+  world_schema: "acore_world_dev"
+  characters_schema: "acore_characters_dev"

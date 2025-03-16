@@ -1,0 +1,11 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: ac-db-config
+  namespace: {{ .Values.namespace }}
+data:
+  MYSQL_ROOT_PASSWORD: password
+  AC_LOGIN_DATABASE_INFO: "{{ .Values.db.host }};{{ .Values.db.port }};{{ .Values.db.user }};{{ .Values.db.password }};{{ .Values.db.auth_schema }}"
+  AC_WORLD_DATABASE_INFO: "{{ .Values.db.host }};{{ .Values.db.port }};{{ .Values.db.user }};{{ .Values.db.password }};{{ .Values.db.world_schema }}"
+  AC_CHARACTER_DATABASE_INFO: "{{ .Values.db.host }};{{ .Values.db.port }};{{ .Values.db.user }};{{ .Values.db.password }};{{ .Values.db.characters_schema }}"
+

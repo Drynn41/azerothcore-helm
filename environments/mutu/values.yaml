@@ -1,0 +1,43 @@
+env: mutu
+namespace: wow-mutu
+
+auth:
+  image: "landry41/ac-wotlk-authserver:master"
+  replicaCount: 1
+  resources:
+    requests:
+      memory: "256M"       # Le conteneur demande au moins 1 Go de RAM
+      cpu: "100m"         # Le conteneur demande 0.5 vCPU (un demi processeur)
+    limits:
+      memory: "512M"       # Le conteneur ne pourra pas utiliser plus de 2 Go de RAM
+      cpu: "500m"
+  service:
+    port: 3724
+    targetPort: 3724
+    nodePort: 30000
+
+ac_db:
+  name: wow-db
+  replicaCount: 1
+  service:
+    name: ac-db-service
+    port: 3306
+    targetPort: 3306
+  pvc:
+    pvc_name: "pvc-mutu"
+  image:
+    repository: mysql
+    tag: "8.4"
+    pullPolicy: IfNotPresent
+  persistence:
+    enabled: true
+    storageClass: wow-db-storage-mutu
+    size: 10Gi
+  mysqlRootPassword: password
+
+db:
+  host: "ac-db-service.wow-mutu.svc.cluster.local"
+  port: "3306"
+  user: "root"
+  password: "password"
+  auth_schema: "acore_auth"
