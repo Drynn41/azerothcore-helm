@@ -25,6 +25,10 @@ spec:
                 name: "{{ .Chart.Name }}-config"
           ports:
             - containerPort: 80
+          volumeMounts:
+            - mountPath: /var/www/html
+              name: {{ .Values.cms.pvc.pvc_name }}
+              readOnly: true  # Mount en lecture seule
           resources:
             requests:
               memory: {{ .Values.cms.resources.requests.memory }}       # Le conteneur demande au moins 1 Go de RAM
@@ -33,3 +37,7 @@ spec:
               memory: {{ .Values.cms.resources.limits.memory }}        # Le conteneur ne pourra pas utiliser plus de 2 Go de RAM
               cpu: {{ .Values.cms.resources.limits.cpu }}
       restartPolicy: Always
+      volumes:  # ❗️ La section volumes doit être DANS spec.template.spec
+        - name: {{ .Values.cms.pvc.pvc_name }}
+          persistentVolumeClaim:
+            claimName: {{ .Values.cms.pvc.pvc_name }}  # PVC du client, à adapter si nécessaire

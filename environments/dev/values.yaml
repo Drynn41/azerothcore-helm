@@ -63,6 +63,12 @@ db:
 cms:
   image: "landry41/blizcms:v1.2.1"
   replicaCount: 1
+  pvc:
+    pvc_name: "pvc-mutu-wow-cms-data"
+  persistence:
+    enabled: true
+    storageClass: wow-client-storage-dev
+    size: 1Gi
   resources:
     requests:
       memory: "256M"       # Le conteneur demande au moins 1 Go de RAM

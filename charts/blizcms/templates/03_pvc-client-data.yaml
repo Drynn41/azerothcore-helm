@@ -1,0 +1,13 @@
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: {{ .Values.cms.pvc.pvc_name }}
+  namespace: {{ .Values.namespace }}  # Utilisation du namespace spécifié dans values.yaml
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: {{ .Values.cmd.persistence.size }}
+  storageClassName: {{ .Values.cms.persistence.storageClass }}
+
