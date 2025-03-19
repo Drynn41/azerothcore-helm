@@ -8,10 +8,11 @@ spec:
       restartPolicy: Never
       containers:
         - name: git-cloner
-          image: alpine/git  # Utilise l'image officielle Git
+          image: alpine  # Utilise l'image officielle Git
           command: ["/bin/sh", "-c"]
           args:
-            - rm -rf BlizzCMS && pwd && ls -alh .
+            - apk add --no-cache git &&
+              rm -rf BlizzCMS && pwd && ls -alh .
               git clone --branch $GIT_BRANCH --single-branch $GIT_REPO
           volumeMounts:
             - mountPath: {{ .Values.cms.pvc.pvc_name }}
