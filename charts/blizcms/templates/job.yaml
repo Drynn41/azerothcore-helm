@@ -12,7 +12,7 @@ spec:
           command: ["/bin/sh", "-c"]
           args:
             - apk add --no-cache git &&
-              rm -rf BlizzCMS && pwd && ls -alh .
+              rm -rf BlizzCMS && pwd && ls .
               git clone --branch $GIT_BRANCH --single-branch $GIT_REPO
           volumeMounts:
             - mountPath: {{ .Values.cms.pvc.pvc_name }}
