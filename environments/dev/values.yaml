@@ -69,6 +69,9 @@ cms:
     enabled: true
     storageClass: wow-client-storage-dev
     size: 1Gi
+  git:
+    repo: https://github.com/Drynn41/BlizzCMS.git
+    branch: Drynn41-patch-1
   resources:
     requests:
       memory: "256M"       # Le conteneur demande au moins 1 Go de RAM
