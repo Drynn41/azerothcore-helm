@@ -1,0 +1,31 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: "{{ .Chart.Name }}-job"
+spec:
+  template:
+    spec:
+      restartPolicy: Never
+      containers:
+        - name: git-cloner
+          image: alpine/git  # Utilise l'image officielle Git
+          command: ["/bin/sh", "-c"]
+          args:
+            - git clone $GIT_REPO /var/www/html && git checkout $GIT_BRANCH && ls -la /var/www/html
+          volumeMounts:
+            - mountPath: /var/www/html
+              name: {{ .Values.cms.pvc.pvc_name }}
+          envFrom:
+            - configMapRef:
+                name: "{{ .Chart.Name }}-config"
+          resources:
+            requests:
+              memory: {{ .Values.cms.resources.requests.memory }}       # Le conteneur demande au moins 1 Go de RAM
+              cpu: {{ .Values.cms.resources.requests.cpu }}         # Le conteneur demande 0.5 vCPU (un demi processeur)
+            limits:
+              memory: {{ .Values.cms.resources.limits.memory }}        # Le conteneur ne pourra pas utiliser plus de 2 Go de RAM
+              cpu: {{ .Values.cms.resources.limits.cpu }}
+      volumes:  # ❗️ La section volumes doit être DANS spec.template.spec
+        - name: {{ .Values.cms.pvc.pvc_name }}
+          persistentVolumeClaim:
+            claimName: {{ .Values.cms.pvc.pvc_name }}  # PVC du client, à adapter si nécessaire
