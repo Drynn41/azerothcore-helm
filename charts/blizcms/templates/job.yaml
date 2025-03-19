@@ -11,9 +11,9 @@ spec:
           image: alpine/git  # Utilise l'image officielle Git
           command: ["/bin/sh", "-c"]
           args:
-            - git clone $GIT_REPO /var/www/html && git checkout $GIT_BRANCH && ls -la /var/www/html
+            - git clone $GIT_REPO && git checkout $GIT_BRANCH && ls -la .
           volumeMounts:
-            - mountPath: /var/www/html
+            - mountPath: {{ .Values.cms.pvc.pvc_name }}
               name: {{ .Values.cms.pvc.pvc_name }}
           envFrom:
             - configMapRef:
