@@ -8,6 +8,6 @@ spec:
     - ReadWriteOnce
   resources:
     requests:
-      storage: {{ .Values.cmd.persistence.size }}
+      storage: {{ .Values.cms.persistence.size }}
   storageClassName: {{ .Values.cms.persistence.storageClass }}
 
