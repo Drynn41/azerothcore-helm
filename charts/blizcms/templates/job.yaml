@@ -11,9 +11,8 @@ spec:
           image: alpine  # Utilise l'image officielle Git
           command: ["/bin/sh", "-c"]
           args:
-            - apk add --no-cache git &&
-              rm -rf BlizzCMS && pwd && ls .
-              git clone --branch $GIT_BRANCH --single-branch $GIT_REPO
+            - apk add --no-cache git && rm -rf {{ .Values.cms.pvc.pvc_name }}/* && pwd && ls .
+              && git clone --branch $GIT_BRANCH --single-branch $GIT_REPO {{ .Values.cms.pvc.pvc_name }}
           volumeMounts:
             - mountPath: {{ .Values.cms.pvc.pvc_name }}
               name: {{ .Values.cms.pvc.pvc_name }}
