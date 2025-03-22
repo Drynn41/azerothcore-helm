@@ -1,7 +1,0 @@
----
-apiVersion: storage.k8s.io/v1
-kind: StorageClass
-metadata:
-  name: {{ .Values.cms.persistence.storageClass }}
-provisioner: kubernetes.io/no-provisioner   # Utilise cette option si tu utilises un volume statique
-

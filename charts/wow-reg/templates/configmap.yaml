@@ -1,0 +1,17 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: "{{ .Chart.Name }}-config"
+  namespace: {{ .Values.namespace }}
+data:
+  CMS_CONFIG_BASEURL: "{{ .Values.cms.baseurl }}" # Base URL of your website
+  CMS_CONFIG_PAGE_TITLE: "{{ .Values.cms.page_title }}" # Title of your website as displayed in the browser tab
+  CMS_CONFIG_DEBUG_MODE: "true" # Debug mode to display errors
+  CMS_CONFIG_REALMLIST: "{{ .Values.cms.realmlist }}" # Realmlist of your server
+  CMS_CONFIG_SOAP_HOST: "{{ .Values.cms.soap.host }}" # SOAP service address
+  CMS_CONFIG_DB_AUTH_HOST: "{{ .Values.db.host }}" # Auth/Realmd database host address
+  CMS_CONFIG_DB_AUTH_PORT: "{{ .Values.db.port }}" # Auth/Realmd database port
+  CMS_CONFIG_DB_AUTH_USER: "{{ .Values.db.user }}" # Auth/Realmd database username
+  CMS_CONFIG_DB_AUTH_PASS: "{{ .Values.db.password }}" # Auth/Realmd database password
+  CMS_CONFIG_DB_AUTH_DBNAME: "{{ .Values.db.auth_schema }}" # Auth/Realmd database name
+  CMS_CONFIG_REALMLISTS: '{"1":{"realmid":1,"realmname":"{{ .Values.cms.realmname }}","db_host":"{{ .Values.db.host }}","db_port":"{{ .Values.db.port }}","db_user":"{{ .Values.db.user }}","db_pass":"{{ .Values.db.password }}","db_name":"{{ .Values.db.characters_schema }}"}}' # Realmlist confi

@@ -1,5 +1,5 @@
 apiVersion: v2
-name: blizcms
+name: wow-reg
 description: "cms web"
 
 # A chart can be either an 'application' or a 'library' chart.
