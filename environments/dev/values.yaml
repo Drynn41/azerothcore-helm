@@ -61,8 +61,15 @@ db:
   characters_schema: "acore_characters_dev"
 
 cms:
-  image: "landry41/blizcms:v1.2.1"
+  install: "false"
+  image: "landry41/blizcms:v1.2.2"
   replicaCount: 1
+  db:
+    host: "ac-db-service.wow-mutu.svc.cluster.local"
+    port: "3306"
+    user: "root"
+    password: "password"
+    cms_schema: "blizzcms_dev"
   pvc:
     pvc_name: "pvc-mutu-wow-cms-data"
   persistence:

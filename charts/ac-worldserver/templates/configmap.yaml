@@ -11,4 +11,5 @@ data:
   AC_LOGS_DIR: "/azerothcore/env/dist/logs"
   AC_WORLD_SERVER_PORT: "{{ .Values.worldserver.service.worldserver.port }}"
   AC_REALM_ID: "{{ .Values.worldserver.server_env.realmlist }}"
-
+  AC_SOAP_ENABLED: "1"
+  AC_SOAP_IP: "0.0.0.0"

@@ -6,3 +6,13 @@ metadata:
 data:
   GIT_BRANCH: "{{ .Values.cms.git.branch }}"
   GIT_REPO: "{{ .Values.cms.git.repo }}"
+  DB_HOST: "{{ .Values.cms.db.host }}"
+  DB_USER: "{{ .Values.cms.db.user }}"
+  DB_PASS: "{{ .Values.cms.db.password }}"
+  DB_NAME: "{{ .Values.cms.db.cms_schema }}"
+  AUTH_DB_NAME:  "{{ .Values.db.auth_schema }}"
+  AUTH_DB_HOST:  "{{ .Values.db.host }}"
+  AUTH_DB_USER:  "{{ .Values.db.user }}"
+  AUTH_DB_PASS: "{{ .Values.db.password }}"
+  AUTH_DB_NAME:   "{{ .Values.db.auth_schema }}"
+  BLIZZ_CMS_INSTALL: "{{ .Values.cms.install }}"

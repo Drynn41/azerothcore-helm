@@ -11,8 +11,13 @@ spec:
           image: alpine  # Utilise l'image officielle Git
           command: ["/bin/sh", "-c"]
           args:
-            - apk add --no-cache git && rm -rf {{ .Values.cms.pvc.pvc_name }}/* && pwd && ls .
+            - apk add --no-cache git && find /{{ .Values.cms.pvc.pvc_name }}/ -delete && pwd
               && git clone --branch $GIT_BRANCH --single-branch $GIT_REPO {{ .Values.cms.pvc.pvc_name }}
+              && find /{{ .Values.cms.pvc.pvc_name }}/ -type f -exec chmod 644 {} \;
+              && find /{{ .Values.cms.pvc.pvc_name }}/ -exec chown -R 1000:1000 {} \;
+              && ls -alh /{{ .Values.cms.pvc.pvc_name }}
+              && find /{{ .Values.cms.pvc.pvc_name }}/ -type d -exec chmod 755 {} \;
+
           volumeMounts:
             - mountPath: {{ .Values.cms.pvc.pvc_name }}
               name: {{ .Values.cms.pvc.pvc_name }}

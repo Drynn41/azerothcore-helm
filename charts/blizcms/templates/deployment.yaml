@@ -28,7 +28,7 @@ spec:
           volumeMounts:
             - mountPath: /var/www/html
               name: {{ .Values.cms.pvc.pvc_name }}
-              readOnly: true  # Mount en lecture seule
+              #readOnly: true  # Mount en lecture seule
           resources:
             requests:
               memory: {{ .Values.cms.resources.requests.memory }}       # Le conteneur demande au moins 1 Go de RAM
