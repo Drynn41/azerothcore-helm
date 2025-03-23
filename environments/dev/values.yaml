@@ -66,7 +66,7 @@ cms:
   soap:
     host: "ac-worldserver"
     port: 7878
-  realmlist: "wow.linuxtime.fr:32200"
+  realmlist: "wow.linuxtime.fr"
   realmname: "wow-dev"
   baseurl: "https://wow.linuxtime.fr"
   page_title: "WoW Registration DEV"
