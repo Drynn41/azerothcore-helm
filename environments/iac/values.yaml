@@ -66,10 +66,10 @@ cms:
   soap:
     host: "ac-worldserver"
     port: 7878
-  realmlist: "wow.linuxtime.fr:32200"
-  realmname: "wow-dev"
+  realmlist: "wow.linuxtime.fr"
+  realmname: "wow-iac"
   baseurl: "https://wow.linuxtime.fr"
-  page_title: "WoW Registration DEV"
+  page_title: "WoW Registration IAC"
   resources:
     requests:
       memory: "256M"       # Le conteneur demande au moins 1 Go de RAM
