@@ -68,7 +68,7 @@ cms:
     port: 7878
   realmlist: "192.168.1.162:32200"
   realmname: "wow-dev"
-  baseurl: "http://192.168.1.162:32203"
+  baseurl: "https://wow.linuxtime.fr"
   page_title: "WoW Registration DEV"
   resources:
     requests:
