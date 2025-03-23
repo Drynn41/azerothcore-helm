@@ -9,7 +9,7 @@ ac_data_init:
     pvc_name: pvc-iac-wow-client-data
   image:
     repository: landry41/ac-wotlk-client-data # ou mariadb si tu utilises cela
-    tag: "master"
+    tag: "1.0.0"
     pullPolicy: IfNotPresent
   replicaCount: 1
   persistence:
@@ -22,12 +22,12 @@ ac_db_import:
   name: ac-db-import
   image:
     repository: landry41/ac-wotlk-db-import # ou mariadb si tu utilises cela
-    tag: "master"
+    tag: "1.0.0"
     pullPolicy: IfNotPresent
 
 
 worldserver:
-  image: "landry41/ac-wotlk-worldserver:master"
+  image: "landry41/ac-wotlk-worldserver:1.0.0"
   replicaCount: 1
   pvc:
     pvc_name: "pvc-iac-wow-client-data"

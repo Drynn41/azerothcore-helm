@@ -2,7 +2,7 @@ env: mutu
 namespace: wow-mutu
 
 auth:
-  image: "landry41/ac-wotlk-authserver:master"
+  image: "landry41/ac-wotlk-authserver:1.0.0"
   replicaCount: 1
   resources:
     requests:
