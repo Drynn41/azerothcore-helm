@@ -70,13 +70,6 @@ cms:
   realmname: "wow-dev"
   baseurl: "http://192.168.1.162:32203"
   page_title: "WoW Registration DEV"
-
-  db:
-    host: "ac-db-service.wow-mutu.svc.cluster.local"
-    port: "3306"
-    user: "root"
-    password: "password"
-    cms_schema: "blizzcms_dev"
   resources:
     requests:
       memory: "256M"       # Le conteneur demande au moins 1 Go de RAM
