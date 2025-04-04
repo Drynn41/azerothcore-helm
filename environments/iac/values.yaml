@@ -81,3 +81,4 @@ cms:
     port: 80
     targetPort: 80
     nodePort: 32303
+  template: "advance"

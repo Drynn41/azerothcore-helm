@@ -5,12 +5,16 @@ dependencies:
   - name: ac-db
     version: 1.0.0
     repository: "file://charts/ac-db"
-  - name: ac-client-data-init
+  - name: ac-db-import
     version: 1.0.0
-    repository: "file://charts/ac-client-data-init"
-    version: 1.0.0
-    repository: "file://charts/ac-auth"
+    repository: "file://charts/ac-db-import"
   - name: ac-worldserver
     version: 1.0.0
     repository: "file://charts/ac-worldserver"
+  - name: ac-auth
+    version: 1.0.0
+    repository: "file://charts/ac-auth"
+  - name: wow-reg
+    version: 1.0.0
+    repository: "file://charts/wow-reg"
 

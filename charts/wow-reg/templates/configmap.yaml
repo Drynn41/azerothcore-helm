@@ -15,3 +15,4 @@ data:
   CMS_CONFIG_DB_AUTH_PASS: "{{ .Values.db.password }}" # Auth/Realmd database password
   CMS_CONFIG_DB_AUTH_DBNAME: "{{ .Values.db.auth_schema }}" # Auth/Realmd database name
   CMS_CONFIG_REALMLISTS: '{"1":{"realmid":1,"realmname":"{{ .Values.cms.realmname }}","db_host":"{{ .Values.db.host }}","db_port":"{{ .Values.db.port }}","db_user":"{{ .Values.db.user }}","db_pass":"{{ .Values.db.password }}","db_name":"{{ .Values.db.characters_schema }}"}}' # Realmlist confi
+  CMS_CONFIG_TEMPLATE: "{{ .Values.cms.template }}" # Template to use for the website

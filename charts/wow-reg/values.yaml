@@ -1,0 +1,31 @@
+cms:
+  image: "landry41/wow-registration:v1.0.1"
+  replicaCount: 1
+  soap:
+    host: "ac-worldserver"
+    port: 7878
+  realmlist: "wow.linuxtime.fr"
+  realmname: "wow-iac"
+  baseurl: "https://wow.linuxtime.fr"
+  page_title: "WoW Registration IAC"
+  resources:
+    requests:
+      memory: "256M"       # Le conteneur demande au moins 1 Go de RAM
+      cpu: "100m"         # Le conteneur demande 0.5 vCPU (un demi processeur)
+    limits:
+      memory: "512M"       # Le conteneur ne pourra pas utiliser plus de 2 Go de RAM
+      cpu: "500m"
+  service:
+    port: 80
+    targetPort: 80
+    nodePort: 32303
+  template: "advance"
+
+db:
+  host: "ac-db-service.wow-mutu.svc.cluster.local"
+  port: "3306"
+  user: "root"
+  password: "password"
+  auth_schema: "acore_auth"
+  world_schema: "acore_world_iac"
+  characters_schema: "acore_characters_iac"

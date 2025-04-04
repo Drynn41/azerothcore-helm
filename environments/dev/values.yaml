@@ -4,20 +4,6 @@
 env: dev
 namespace: wow-dev
 
-ac_data_init:
-  pvc:
-    pvc_name: pvc-dev-wow-client-data
-  image:
-    repository: landry41/ac-wotlk-client-data # ou mariadb si tu utilises cela
-    tag: "1.0.0"
-    pullPolicy: IfNotPresent
-  replicaCount: 1
-  persistence:
-    enabled: true
-    storageClass: wow-client-storage-dev
-    size: 10Gi
-
-
 ac_db_import:
   name: ac-db-import
   image:
@@ -28,11 +14,12 @@ ac_db_import:
 
 worldserver:
   image: "landry41/ac-wotlk-worldserver:1.0.0"
-  replicaCount: 1
   pvc:
-    pvc_name: "pvc-dev-wow-client-data"
+    pvc_name: "pvc-iac-wow-client-data"
+    storageClass: wow-client-storage-iac
+    size: 10Gi
   server_env:
-    realmlist: 1
+    realmlist: 2
   resources:
     requests:
       memory: "512M"       # Le conteneur demande au moins 1 Go de RAM
@@ -40,16 +27,8 @@ worldserver:
     limits:
       memory: "2Gi"       # Le conteneur ne pourra pas utiliser plus de 2 Go de RAM
       cpu: "1"            # Le conteneur ne pourra pas utiliser plus de 1 vCPU (un processeur complet)
-  service:
-    worldserver:
-      port: 8085
-      targetPort: 8085
-      nodePort: 32200
-    soap:
-      port: 7878
-      targetPort: 7878
-      nodePort: 32201
-
+  data_init:
+    image: landry41/ac-wotlk-client-data:1.0.0
 
 db:
   host: "ac-db-service.wow-mutu.svc.cluster.local"

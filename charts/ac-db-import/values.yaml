@@ -1,0 +1,15 @@
+ac_db_import:
+  name: ac-db-import
+  image:
+    repository: landry41/ac-wotlk-db-import # ou mariadb si tu utilises cela
+    tag: "1.0.0"
+    pullPolicy: IfNotPresent
+
+db:
+  host: "ac-db-service.wow-mutu.svc.cluster.local"
+  port: "3306"
+  user: "root"
+  password: "password"
+  auth_schema: "acore_auth"
+  world_schema: "acore_world_iac"
+  characters_schema: "acore_characters_iac"

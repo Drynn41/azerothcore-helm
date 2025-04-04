@@ -15,9 +15,17 @@ spec:
       labels:
         app: {{ .Chart.Name }}
     spec:
+      initContainers:
+        - name: "{{ .Chart.Name }}-{{ .Chart.AppVersion }}-data-init"
+          imagePullPolicy: {{ .Values.worldserver.data_init.pullPolicy }}
+          image: "{{ .Values.worldserver.data_init.image }}"           # Assure-toi d'utiliser la bonne image Docker
+          volumeMounts:
+            - mountPath: /azerothcore/env/dist/data
+              name: worldserver-data
       containers:
-        - name: {{ .Chart.Name }}
-          image: {{ .Values.worldserver.image }}  # L'image du service {{ .Chart.Name }}
+        - name: "{{ .Chart.Name }}-{{ .Chart.AppVersion }}-server"
+          imagePullPolicy: {{ .Values.worldserver.pullPolicy }}  # La politique de pull de l'image
+          image: {{ .Values.worldserver.image }}                      # L'image du service {{ .Chart.Name }}
           stdin: true
           tty: true
           envFrom:
@@ -28,19 +36,12 @@ spec:
             - containerPort: {{ .Values.worldserver.service.soap.port }}
           volumeMounts:
             - mountPath: /azerothcore/env/dist/data
-              name: {{ .Values.worldserver.pvc.pvc_name }}
-              readOnly: true  # Mount en lecture seule
-          resources:
-            requests:
-              memory: {{ .Values.worldserver.resources.requests.memory }}       # Le conteneur demande au moins 1 Go de RAM
-              cpu: {{ .Values.worldserver.resources.requests.cpu }}         # Le conteneur demande 0.5 vCPU (un demi processeur)
-            limits:
-              memory: {{ .Values.worldserver.resources.limits.memory }}        # Le conteneur ne pourra pas utiliser plus de 2 Go de RAM
-              cpu: {{ .Values.worldserver.resources.limits.cpu }}
+              name: worldserver-data
+{{ toYaml .Values.worldserver.resources | indent 10 }}  # Indentation de 12 espaces pour la section resources
       restartPolicy: Always
 
       volumes:  # ❗️ La section volumes doit être DANS spec.template.spec
-        - name: {{ .Values.worldserver.pvc.pvc_name }}
+        - name: worldserver-data
           persistentVolumeClaim:
             claimName: {{ .Values.worldserver.pvc.pvc_name }}  # PVC du client, à adapter si nécessaire
 

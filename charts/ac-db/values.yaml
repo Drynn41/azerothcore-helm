@@ -1,0 +1,25 @@
+ac_db:
+  name: wow-db
+  replicaCount: 1
+  service:
+    name: ac-db-service
+    port: 3306
+    targetPort: 3306
+  pvc:
+    pvc_name: "pvc-mutu"
+  image:
+    repository: mysql
+    tag: "8.4"
+    pullPolicy: IfNotPresent
+  persistence:
+    enabled: true
+    storageClass: wow-db-storage-mutu
+    size: 10Gi
+  mysqlRootPassword: password
+
+db:
+  host: "ac-db-service.wow-mutu.svc.cluster.local"
+  port: "3306"
+  user: "root"
+  password: "password"
+  auth_schema: "acore_auth"

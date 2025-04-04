@@ -1,0 +1,38 @@
+worldserver:
+  image: "landry41/ac-wotlk-worldserver:1.0.0"
+  pullPolicy: IfNotPresent
+  replicaCount: 1
+  pvc:
+    pvc_name: "pvc-iac-wow-client-data"
+    storageClass: wow-client-storage-iac
+    size: 10Gi
+  server_env:
+    realmlist: 2
+  resources:
+    requests:
+      memory: "512M"       # Le conteneur demande au moins 1 Go de RAM
+      cpu: "500m"         # Le conteneur demande 0.5 vCPU (un demi processeur)
+    limits:
+      memory: "2Gi"       # Le conteneur ne pourra pas utiliser plus de 2 Go de RAM
+      cpu: "1"            # Le conteneur ne pourra pas utiliser plus de 1 vCPU (un processeur complet)
+  service:
+    worldserver:
+      port: 8085
+      targetPort: 8085
+      nodePort: 32300
+    soap:
+      port: 7878
+      targetPort: 7878
+      nodePort: 32301
+  data_init:
+    image: landry41/ac-wotlk-client-data:1.0.0
+    pullPolicy: IfNotPresent
+
+db:
+  host: "ac-db-service.wow-mutu.svc.cluster.local"
+  port: "3306"
+  user: "root"
+  password: "password"
+  auth_schema: "acore_auth"
+  world_schema: "acore_world_iac"
+  characters_schema: "acore_characters_iac"
