@@ -9,7 +9,7 @@ spec:
   accessModes:
     - ReadWriteOnce
   persistentVolumeReclaimPolicy: Delete
-  storageClassName: {{ .Values.worldserver.storageClass }}  # Ici, on définit la StorageClass
+  storageClassName: {{ .Values.ac_data_init.persistence.storageClass }}  # Ici, on définit la StorageClass
   hostPath:
     path: "/srv/data/wow-client-data-{{ .Values.env }}-pv"  # Le point de montage sur ton nœud pour les fichiers client
 

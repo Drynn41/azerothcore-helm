@@ -13,3 +13,11 @@ spec:
   hostPath:
     path: "/srv/data/wow-db-data-{{ .Values.env }}-pv"  # Le point de montage sur ton nœud pour la base de données
 
+  nodeAffinity:
+    required:
+      nodeSelectorTerms:
+      - matchExpressions:
+        - key: kubernetes.io/hostname
+          operator: In
+          values:
+            - kubenode01.linuxtime.fr
