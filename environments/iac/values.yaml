@@ -29,6 +29,7 @@ ac_db_import:
 worldserver:
   image: "landry41/ac-wotlk-worldserver:1.0.0"
   replicaCount: 1
+  storageClass: wow-client-storage-iac
   pvc:
     pvc_name: "pvc-iac-wow-client-data"
   server_env:

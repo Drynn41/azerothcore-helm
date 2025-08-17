@@ -16,14 +16,14 @@ spec:
         app: {{ .Chart.Name }}
     spec:
       initContainers:
-        - name: "{{ .Chart.Name }}-{{ .Chart.AppVersion }}-data-init"
+        - name: "{{ .Chart.Name }}-data-init"
           imagePullPolicy: {{ .Values.worldserver.data_init.pullPolicy }}
           image: "{{ .Values.worldserver.data_init.image }}"           # Assure-toi d'utiliser la bonne image Docker
           volumeMounts:
             - mountPath: /azerothcore/env/dist/data
               name: worldserver-data
       containers:
-        - name: "{{ .Chart.Name }}-{{ .Chart.AppVersion }}-server"
+        - name: "{{ .Chart.Name }}-server"
           imagePullPolicy: {{ .Values.worldserver.pullPolicy }}  # La politique de pull de l'image
           image: {{ .Values.worldserver.image }}                      # L'image du service {{ .Chart.Name }}
           stdin: true

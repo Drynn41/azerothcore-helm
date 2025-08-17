@@ -8,6 +8,6 @@ spec:
     - ReadWriteOnce
   resources:
     requests:
-      storage: {{ .Values.worldserver.size }}
-  storageClassName: {{ .Values.worldserver.storageClass }}
+      storage: {{ .Values.worldserver.pvc.size }}
+  storageClassName: {{ .Values.worldserver.pvc.storageClass }}
 
